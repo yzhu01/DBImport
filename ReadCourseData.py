@@ -54,23 +54,14 @@ class Lab:
 		self.instructor = kwargs.get('instructor')
 		self.location = kwargs.get('location')
 
-
-
-def main():
-
-	filename = input('Please enter file path (Example E:\\Personal_Workflow\\FHDA\\DBImport\\2018_Winter_De_Anza_courseData.json)\n')
-
-	if filename:
-		with open(filename, 'r') as f:
-			course_raw_data = json.load(f)
-
+def from_raw_to_list(course_raw):
 	course_list = []
 	department_list = []
-	total_course = 0
-	for department in course_raw_data['2018 Winter De Anza']['CourseData']:
+
+	for department in course_raw['2018 Winter De Anza']['CourseData']:
 		dep_course_num = 0
 		temp_dept = Department(department)
-		for c in course_raw_data['2018 Winter De Anza']['CourseData'][department]:
+		for c in course_raw['2018 Winter De Anza']['CourseData'][department]:
 			dep_course_num += 1
 			temp_course = Course(UID = c['CRN'],crn = c['CRN'], course_num = c['Crse'], 
 							 section_num = c['Sec'], campus = c['Cmp'], num_credit = c['Cred'],
@@ -82,26 +73,15 @@ def main():
 			course_ineach_dept = '{0} {1} {2}'.format(temp_dept.deptName, temp_course.course_num, temp_course.course_title) 
 			if course_ineach_dept not in temp_dept.courses:
 				temp_dept.courses.append(course_ineach_dept)
-			total_course += 1
 		print('department', department, 'has', dep_course_num, 'sections.')
 		department_list.append(temp_dept)
 
-	print('total course:', total_course)
-	print('loaded course:', len(course_list))
 
-	env_path = Path('.') / '.env'
-	load_dotenv(dotenv_path=env_path)
+	return course_list, department_list
 
-	username = os.getenv('Mongo_User')
-	password = os.getenv('Mongo_Password')
-	db_name = 'yifeil_test'      #os.getenv('Mongo_DBName') #just tesing the code
-	client = MongoClient('mongodb+srv://' + username +':' + password + '@fhdatimedb-jjsjm.mongodb.net/test?retryWrites=true&w=majority')
-	db = client.get_database(db_name)
 
-	tc = db.new_test_courses  #tc for test_course, just testing the code
-	td = db.new_test_depts	#td for test_dept., just testing the code
-	for course in course_list:
-		temp_course = {
+def course_obj_to_dict(course):
+	temp_course = {
 			'UID' : course.UID,
 			'crn': course.crn,
 			'course_num' : course.course_num,
@@ -120,6 +100,34 @@ def main():
 			'location' : course.location,
 			'attribute' : course.attribute,
 		}
+	return temp_course
+
+
+def main():
+
+	filename = input('Please enter file path (Example E:\\Personal_Workflow\\FHDA\\DBImport\\2018_Winter_De_Anza_courseData.json)\n')
+
+	if filename:
+		with open(filename, 'r') as f:
+			course_raw_data = json.load(f)
+
+	course_list, department_list = from_raw_to_list(course_raw_data)
+	print('loaded course:', len(course_list))
+
+	env_path = Path('.') / '.env'
+	load_dotenv(dotenv_path=env_path)
+
+
+	username = os.getenv('Mongo_User')
+	password = os.getenv('Mongo_Password')
+	db_name = 'yifeil_test'      #os.getenv('Mongo_DBName') #just tesing the code
+	client = MongoClient('mongodb+srv://' + username +':' + password + '@fhdatimedb-jjsjm.mongodb.net/test?retryWrites=true&w=majority')
+	db = client.get_database(db_name)
+
+	tc = db.new_test_courses  #tc for test_course, just testing the code
+	td = db.new_test_depts	#td for test_dept., just testing the code
+	for course in course_list:
+		temp_course = course_obj_to_dict(course)
 		tc.insert_one(temp_course)
 
 	for dept in department_list:
@@ -128,5 +136,7 @@ def main():
 			'course_list' : dept.courses
 		}
 		td.insert_one(temp_dept)
+
+
 if __name__ == '__main__':
 	main()
