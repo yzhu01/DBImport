@@ -55,14 +55,18 @@ class Lab:
 		self.location = kwargs.get('location')
 
 def from_raw_to_list(course_raw):
-	course_list = []
-	department_list = []
+	course_list, department_list = [], []
 
 	for department in course_raw['2018 Winter De Anza']['CourseData']:
-		dep_course_num = 0
 		temp_dept = Department(department)
-		for c in course_raw['2018 Winter De Anza']['CourseData'][department]:
-			dep_course_num += 1
+		temp_dept = read_course(course_raw, course_list, department, temp_dept)
+		department_list.append(temp_dept)
+
+
+	return course_list, department_list
+
+def read_course(course_raw, course_list, department, temp_dept):
+	for c in course_raw['2018 Winter De Anza']['CourseData'][department]:
 			temp_course = Course(UID = c['CRN'],crn = c['CRN'], course_num = c['Crse'], 
 							 section_num = c['Sec'], campus = c['Cmp'], num_credit = c['Cred'],
 							 course_title = c['Title'], days = c['Days'], startTime = c['Time'][:8], 
@@ -73,11 +77,7 @@ def from_raw_to_list(course_raw):
 			course_ineach_dept = '{0} {1} {2}'.format(temp_dept.deptName, temp_course.course_num, temp_course.course_title) 
 			if course_ineach_dept not in temp_dept.courses:
 				temp_dept.courses.append(course_ineach_dept)
-		print('department', department, 'has', dep_course_num, 'sections.')
-		department_list.append(temp_dept)
-
-
-	return course_list, department_list
+	return temp_dept
 
 
 def course_obj_to_dict(course):
@@ -102,6 +102,38 @@ def course_obj_to_dict(course):
 		}
 	return temp_course
 
+def dept_obj_to_dict(dept):
+	temp_dept = {
+			'department_name' : dept.deptName,
+			'course_list' : dept.courses
+		}
+	return temp_dept
+
+def get_db():
+	env_path = Path('.') / '.env'
+	load_dotenv(dotenv_path=env_path)
+	username = os.getenv('Mongo_User')
+	password = os.getenv('Mongo_Password')
+	db_name = 'yifeil_test'      #os.getenv('Mongo_DBName') #just tesing the code
+	client = MongoClient('mongodb+srv://' + username +':' + password + '@fhdatimedb-jjsjm.mongodb.net/test?retryWrites=true&w=majority')
+	return client.get_database(db_name)
+
+def insert_data(course_list, dept_list):
+	db = get_db()
+	tc = db.new_test_courses  #tc for test_course, just testing the code
+	td = db.new_test_depts	#td for test_dept., just testing the code
+
+
+	for course in course_list:
+		temp_course = course_obj_to_dict(course)
+		tc.insert_one(temp_course)
+
+	for dept in dept_list:
+		temp_dept = dept_obj_to_dict(dept)
+		td.insert_one(temp_dept)
+
+
+
 
 def main():
 
@@ -112,30 +144,9 @@ def main():
 			course_raw_data = json.load(f)
 
 	course_list, department_list = from_raw_to_list(course_raw_data)
-	print('loaded course:', len(course_list))
+	print('Total loaded course:', len(course_list))
 
-	env_path = Path('.') / '.env'
-	load_dotenv(dotenv_path=env_path)
-
-
-	username = os.getenv('Mongo_User')
-	password = os.getenv('Mongo_Password')
-	db_name = 'yifeil_test'      #os.getenv('Mongo_DBName') #just tesing the code
-	client = MongoClient('mongodb+srv://' + username +':' + password + '@fhdatimedb-jjsjm.mongodb.net/test?retryWrites=true&w=majority')
-	db = client.get_database(db_name)
-
-	tc = db.new_test_courses  #tc for test_course, just testing the code
-	td = db.new_test_depts	#td for test_dept., just testing the code
-	for course in course_list:
-		temp_course = course_obj_to_dict(course)
-		tc.insert_one(temp_course)
-
-	for dept in department_list:
-		temp_dept = {
-			'department_name' : dept.deptName,
-			'course_list' : dept.courses
-		}
-		td.insert_one(temp_dept)
+	insert_data(course_list, department_list)
 
 
 if __name__ == '__main__':
