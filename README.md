@@ -71,14 +71,21 @@ Reference:
     ├── data/  
     │   └── input.json  
     │  
+    ├── scripts/  
+    │   ├── pre-commit.sh  
+    │   └── pre-push.sh  
     ├── tests/  
+    │   ├── 00_empty_test.py  
     │   └── DBImport  
     │       ├── helpers_tests.py  
-    │       └── DBImport_tests.py  
+    │       └── DBImport_tests.py 
     │  
     ├── .gittattributes
     ├── .gitignore
-    ├── requirements.txt  
+    ├── package.json
+    ├── pylintrc
+    ├── requirements.txt
+    ├── setup.cfg  
     ├── LICENSE  
     └── README.md  
 
