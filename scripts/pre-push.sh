@@ -15,8 +15,8 @@ set -e
   exit 0
 }
 
-# npm run lint
-pwd
+# run linter here
+# run test here
 
 [ -z "$CYGWIN" ] && {
   # git rebase
