@@ -17,6 +17,7 @@ set -e
 
 # run linter here
 # run test here
+python -m pytest 
 
 [ -z "$CYGWIN" ] && {
   # git rebase
