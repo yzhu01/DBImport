@@ -7,7 +7,9 @@ to MongoDB database.
 
 ## Requirements
 
-Python 3.6
+Python v3.6
+node v10.16.0
+npm v6.9.0 or above
 
 ## Install
 
@@ -15,7 +17,7 @@ Suggestion: use your virtual environment as you with such as conda, virtualenv..
 
 do the following:
 
-```py
+```script
 pip install -r requirements.txt
 ```
 
@@ -30,6 +32,7 @@ Suggestion: use your virtual environment as you with such as conda, virtualenv..
 do the following:
 
 ```py
+npm install
 pip install -r requirements.txt
 ```
 
