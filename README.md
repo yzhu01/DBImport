@@ -39,11 +39,14 @@ pip install -r requirements.txt
 ## Coding Style
 
 In general, we follow PEP8 Python coding style and Google pyguide
-However, if PEP-8 and Google pyguide has conflict style, PEP8 take place.
+However, if PEP8 and Google pyguide has conflict style, PEP8 take place.
 
 Some special rule:
 
 1. max-line-length: 100
+
+Please also write docstring for contributor easy to follow.
+We follow Google docstring style(https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
 
 Reference:
 
