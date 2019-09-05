@@ -35,6 +35,16 @@ do the following:
 npm install
 pip install -r requirements.txt
 ```
+  
+We require all contributor write docsting for other contributors easy to follow.  
+One of software development process is TDD. We highly recommended you *write test before code*  
+However, test is not require but recommended.  
+The philosophy is **you must know exactly the detailed behavior of your code doing**.  
+
+We use [pytest](https://docs.pytest.org/) to test our code.  
+We use [pydocstring](http://pydocstyle.org/) to test our docstring.  
+We use [autopep8](https://github.com/hhatto/autopep8) to formating our code.  
+We use [pylint](https://pylint.org) as Python linter.  
 
 ## Coding Style
 
