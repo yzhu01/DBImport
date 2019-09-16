@@ -112,12 +112,17 @@ Reference:
 1. https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
 2. https://github.com/joelparkerhenderson/git_commit_message#begin-with-a-short-summary-line
 
-## .env format  
-Mongo_User = "<USER_NAME>"  
-Mongo_Password = "<USER_PASSWORD>"  
-Mongo_DBName = "<Database Name>"  
-Mongo_Postfix = "<Mongo Connection Postfix>"  
-Config_File_Name = "<name of the .config file>"
+## setting.config format  
+\# setting.config
+
+[MongoDB]
+Mongo_User = <db username>
+Mongo_Password = <db password>
+Mongo_DBName = <db name>
+Mongo_Postfix = @something.mongodb.net/test?retryWrites=true&w=majority
+
+[Config]
+Config_File_Name = file_paths.config
 
 ## file_paths.config example
 \# file_paths.config  
