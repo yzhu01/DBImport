@@ -7,6 +7,7 @@ and insert those data into desired databse
 
 
 import os
+import logging
 from ReadCourseData import *
 from configparser import ConfigParser
 from pymongo import MongoClient
