@@ -10,8 +10,6 @@ import os
 import datetime
 from pymongo import MongoClient
 from pathlib import Path
-from dotenv import load_dotenv
-
 
 class Course:
     """Course class.

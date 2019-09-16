@@ -11,32 +11,32 @@ import logging
 from ReadCourseData import *
 from configparser import ConfigParser
 from pymongo import MongoClient
-from dotenv import load_dotenv
 from pathlib import Path
 
 logger = logging.getLogger('DBImport_Logger')
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path)   #get environmental variables
-
+env_config = ConfigParser()
+env_config.read(Path('..') / 'config' / 'setting.config')
+print(env_config.sections())
+mongo_config = env_config['MongoDB']
 
 def get_db():
-    """Get MongoDB username and password from .env file and returns desired databse.
+    """Get MongoDB username and password from config file and returns desired databse.
 
     Args:
-        'Mongo_User'(from '.env'): the user name used to access the mongoDB Atlas
-        'Mongo_Password'(from '.env'): the password used to access the mongoDB Atlas
-        'Mongo_DBName'(from '.env'): the desired database name
-        'Mongo_Postfix'(from '.env'): the postfix of the srv link from MongoDB
+        'Mongo_User'(from 'setting.config'): the user name used to access the mongoDB Atlas
+        'Mongo_Password'(from 'setting.config'): the password used to access the mongoDB Atlas
+        'Mongo_DBName'(from 'setting.config'): the desired database name
+        'Mongo_Postfix'(from 'setting.config'): the postfix of the srv link from MongoDB
     Raises:
         pymongo.errors: possibly connection errors or conficuration errors
     Returns:
         The database object
 
     """
-    username, password = os.getenv('Mongo_User'), os.getenv('Mongo_Password')
-    db_name = os.getenv('Mongo_DBName')
+    username, password = mongo_config['Mongo_User'], mongo_config['Mongo_Password']
+    db_name = mongo_config['Mongo_DBName']
     client = MongoClient('mongodb+srv://' + username + ':' + password
-                         + os.getenv('Mongo_Postfix'))
+                         + mongo_config['Mongo_Postfix'])
     return client.get_database(db_name)
 
 
@@ -94,9 +94,9 @@ def main():
     """
     logger.info('Excecution Started At: ', datetime.datetime.now())
     config = ConfigParser()
-    config.read(os.getenv('Config_File_Name'))
+    config.read(Path('..') / 'config' / env_config['Config']['Config_File_Name'])
     path = config['locations']['path']
-    year = config['data_info']['start_year']
+    year = int(config['data_info']['start_year'])
 
     try:
         while(config['locations'][str(year)]):
@@ -112,8 +112,6 @@ def main():
     except Exception as e:
         logger.error(e)
         logger.info('Excecution Finished At: ', datetime.datetime.now())
-        logger.basicConfig(filename='~/log_file.log', filemode='w', level=logging.DEBUG)
-
 
 if __name__ == "__main__":
     main()
