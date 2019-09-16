@@ -8,6 +8,7 @@ lists of Course and Department objects for databse insertion
 import json
 import os
 import datetime
+import logging
 from pymongo import MongoClient
 from pathlib import Path
 from dotenv import load_dotenv
@@ -44,6 +45,9 @@ class Course:
 
     def __init__(self, **kwargs):
         """Initialize an object for Course class.
+
+        kwargs parameter:
+            same as the class attributes above
 
         Initialize a Course object with the **kwargs
         """
@@ -85,6 +89,9 @@ class Instructor:
     def __init__(self, **kwargs):
         """Initialize an object for Instructor class.
 
+        kwargs parameter:
+            same as the class attributes above
+
         Initialize a Instructor object with the **kwargs
         """
         self.firstName, self.middleName = kwargs.get('firstName'), kwargs.get('middleName')
@@ -105,6 +112,9 @@ class Department:
 
     def __init__(self, deptName):
         """Initialize an object for Department class.
+
+        Parameters:
+            deptName: the name of this department
 
         Initialize a Department object with the **kwargs
         """

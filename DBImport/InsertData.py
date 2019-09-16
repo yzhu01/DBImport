@@ -5,13 +5,17 @@ This module gets lists of Course and Department objects from ReadCourseData.py
 and insert those data into desired databse
 """
 
-import logging
+
 import os
 from ReadCourseData import *
 from configparser import ConfigParser
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from pathlib import Path
+
+logger = logging.getLogger('DBImport_Logger')
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)   #get environmental variables
 
 
 def get_db():
@@ -28,8 +32,6 @@ def get_db():
         The database object
 
     """
-    env_path = Path('.') / '.env'
-    load_dotenv(dotenv_path=env_path)
     username, password = os.getenv('Mongo_User'), os.getenv('Mongo_Password')
     db_name = os.getenv('Mongo_DBName')
     client = MongoClient('mongodb+srv://' + username + ':' + password
@@ -53,7 +55,7 @@ def check_file_open(filename):
             return json.load(f)
     else:
         logging.info('File name: ', filename, ' cannot be found!')
-        raise Exception('File not found')
+        raise FileNotFoundError('File not found')
 
 
 def insert_data(course_list, dept_list, quarter_name):
@@ -89,9 +91,7 @@ def main():
     With help of other functions, this main function could read the data from
     json files and put them into desired databses.
     """
-    env_path = Path('.') / '.env'
-    load_dotenv(dotenv_path=env_path)
-    logging.info('Excecution Started At: ', datetime.datetime.now())
+    logger.info('Excecution Started At: ', datetime.datetime.now())
     config = ConfigParser()
     config.read(os.getenv('Config_File_Name'))
     path = config['locations']['path']
@@ -104,13 +104,14 @@ def main():
                 quarter_name, filename = each_quarter[:-16].replace('_', ' '), path + each_quarter
                 course_raw_data = check_file_open(filename)
                 course_list, department_list = from_raw_to_list(course_raw_data, quarter_name)
-                logging.info(datetime.datetime.now(),
+                logger.info(datetime.datetime.now(),
                              ': Total loaded course for quarter ', each_quarter, ' ', len(course_list))
                 insert_data(course_list, department_list, quarter_name)
             year += 1
     except Exception as e:
-        logging.info('Excecution Finished At: ', datetime.datetime.now())
-        logging.basicConfig(filename='~/log_file.log', filemode='w', level=logging.DEBUG)
+        logger.error(e)
+        logger.info('Excecution Finished At: ', datetime.datetime.now())
+        logger.basicConfig(filename='~/log_file.log', filemode='w', level=logging.DEBUG)
 
 
 if __name__ == "__main__":
