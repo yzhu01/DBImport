@@ -115,13 +115,13 @@ Reference:
 ## setting.config format  
 \# setting.config
 
-[MongoDB]
+[MongoDB]  
 Mongo_User = <db username>
 Mongo_Password = <db password>
 Mongo_DBName = <db name>
 Mongo_Postfix = @something.mongodb.net/test?retryWrites=true&w=majority
-
-[Config]
+   
+[Config]  
 Config_File_Name = file_paths.config
 
 ## file_paths.config example
