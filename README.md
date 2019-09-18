@@ -135,5 +135,3 @@ path = E:\Personal_Workflow\FHDA\DBImport\course_data\
 2010 = 2010_Fall_De_Anza_courseData.json,2010_Fall_Foothill_courseData.json,2010_Summer_De_Anza_courseData.json,2010_Summer_Foothill_courseData.json  
 2011 = 2011_Fall_De_Anza_courseData.json,2011_Fall_Foothill_courseData.json,2011_Spring_De_Anza_courseData.json,2011_Spring_Foothill_courseData.json,2011_Summer_De_Anza_courseData.json,2011_Summer_Foothill_courseData.json,2011_Winter_De_Anza_courseData.json,2011_Winter_Foothill_courseData.json  
 ....
-
-
