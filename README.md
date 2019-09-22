@@ -115,11 +115,11 @@ Reference:
 ## setting.config format  
 \# setting.config
 
-[MongoDB]  
-Mongo_User = <db username>
-Mongo_Password = <db password>
-Mongo_DBName = <db name>
-Mongo_Postfix = @something.mongodb.net/test?retryWrites=true&w=majority
+[MongoDB]    
+Mongo_User = \<db username\>  
+Mongo_Password = \<db password\>  
+Mongo_DBName = \<db name\>  
+Mongo_Postfix = \<db connection string\> for example @something.mongodb.net/test?retryWrites=true&w=majority  
    
 [Config]  
 Config_File_Name = file_paths.config
