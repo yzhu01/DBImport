@@ -16,9 +16,10 @@ from configparser import ConfigParser
 from pymongo import MongoClient
 from pathlib import Path
 
-logging.basicConfig(filename = str(datetime.datetime.now()).replace(' ', '_').replace(':', '')[:17] + '.log', 
-                            level=logging.INFO, 
-                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename = '../log/' + 
+                str(datetime.datetime.now()).replace(' ', '_').replace(':', '')[:17] + '.log', 
+                level=logging.INFO, 
+                format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 env_config = ConfigParser()
 env_config.read(Path('..') / 'config' / 'setting.config')
