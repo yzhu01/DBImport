@@ -46,7 +46,6 @@ def read_course_proto(json_object, course_list, departmentName):
         temp_course.campus = each_course['Cmp']
         temp_course.num_credit = float(each_course['Cred'])
         temp_course.course_title = each_course['Title']
-        temp_course.days = each_course['Days']
         temp_course.startTime = each_course['Time'][:8]
         temp_course.endTime = each_course['Time'][9:]
         temp_course.cap = int(each_course['Cap'])
@@ -55,8 +54,7 @@ def read_course_proto(json_object, course_list, departmentName):
         temp_course.startDate = each_course['Date'][:5]
         temp_course.endDate = each_course['Date'][6:]
         temp_course.location = each_course['Location']
-        if('ONLINE' in temp_course.location):
-            temp_course.days = 'ONLINE'
+        temp_course.days = ('ONLINE' in temp_course.location) ? 'ONLINE':each_course['Days']
         temp_course.attribute = each_course['Attribute']
         if(each_course['Lab Time']):
             temp_lab = temp_course.lab.add()
