@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package dbimport;
+
+message Course {
+	required string UID = 1;
+	required string crn = 2;
+	required string course_num = 3;
+	required string section_num = 4;
+	required string campus = 5;
+	required double num_credit = 6;
+	required string course_title = 7;
+	optional string days = 8;
+	optional string startTime = 9;
+	optional string endTime = 10;
+	optional int32 cap = 11;
+	optional int32 wl_cap = 12;
+	optional string instructor_name = 13;
+	optional string startDate = 14;
+	optional string endDate = 15;
+	optional string location = 16;
+	optional string attribute = 17;
+	repeated Lab lab = 18;
+	repeated int32 act = 19;
+	repeated int32 wl_act = 20;
+
+	message Lab {
+	required string UID = 1;
+	optional string days = 2;
+	optional string time = 3;
+	optional string startDate = 4;
+	optional string endDate = 5;
+	optional string instructor = 6;
+	optional string location = 7;
+	}
+}

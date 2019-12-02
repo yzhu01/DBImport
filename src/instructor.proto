@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package dbimport;
+import "course.proto";
+
+message Instructor{
+	required string firstName = 1;
+	required string lastName = 2;
+	optional string middleName = 3;
+	optional string website = 4;
+	optional string email = 5;
+	repeated string department = 6;
+	repeated Course relatedCourse = 7;
+}
