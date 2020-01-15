@@ -28,11 +28,6 @@ mongo_config = env_config['MongoDB']
 def get_db():
     """Get MongoDB username and password from config file and returns desired databse.
 
-    Args:
-        'Mongo_User'(from 'setting.config'): the user name used to access the mongoDB Atlas
-        'Mongo_Password'(from 'setting.config'): the password used to access the mongoDB Atlas
-        'Mongo_DBName'(from 'setting.config'): the desired database name
-        'Mongo_Postfix'(from 'setting.config'): the postfix of the srv link from MongoDB
     Raises:
         pymongo.errors: possibly connection errors or conficuration errors
     Returns:
@@ -73,7 +68,8 @@ def insert_data(course_list, dept_list, quarter_name):
         (named quarter_name + 'course'/'departments')
 
     Args:
-        course_list, dept_list: the lists of Course/Department objects
+        course_list: the list of Course objects
+        dept_list: the list of Department objects
     Raises:
         pymongo.errors: possibly connection errors or conficuration errors
     Returns:
