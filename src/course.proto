@@ -8,7 +8,7 @@ message Course {
 	required string course_num = 3;
 	required string section_num = 4;
 	required string campus = 5;
-	required double num_credit = 6;
+	required float num_credit = 6;
 	required string course_title = 7;
 	optional string days = 8;
 	optional string startTime = 9;
