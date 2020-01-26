@@ -109,16 +109,11 @@ def main():
                 course_list, department_list = from_raw_to_list(course_raw_data, quarter_name)
                 insert_data(course_list, department_list, quarter_name)
             year += 1
-    except mongoerrors.ConnectionFailure:
-        logger.error('MongoDB connection failure!')
     except mongoerrors.PyMongoError:
         logger.error('Error with MongoDB!')
-    except FileNotFoundError as fnfe:
-        logger.error(str(fnfe))
-    except KeyError as ke:
-        logger.error(str(ke) + ' is not found in json file!')
-    finally:
-        logger.info('Excecution Finished.')
+    except (FileNotFoundError,KeyError) as e:
+        logger.error(str(e))
+    logger.info('Excecution Finished.')
 
 if __name__ == "__main__":
     main()
