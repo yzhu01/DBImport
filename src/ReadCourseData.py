@@ -56,20 +56,35 @@ def read_course_proto(json_object, course_list, departmentName):
         temp_course.location = each_course['Location']
         temp_course.days = 'ONLINE' if ('ONLINE' in temp_course.location) else each_course['Days']
         temp_course.attribute = each_course['Attribute']
-        if(each_course['Lab Time']):
-            temp_lab = temp_course.lab.add()
-            temp_lab.UID = temp_course.UID + 'L';
-            labInfo = each_course['Lab Time'][0]
-            temp_lab.days = labInfo['Days']
-            temp_lab.time = labInfo['Time']
-            temp_lab.startDate = labInfo['Date'][:5]
-            temp_lab.endDate = labInfo['Date'][6:]
-            temp_lab.instructor = labInfo['Instructor']
-            temp_lab.location = labInfo['Location']
+        temp_course = read_lab_time(each_course, temp_course)
         course_list.append(temp_course)
         if temp_course not in each_department.courses:
             each_department.courses.append(temp_course)
     return each_department
+
+def read_lab_time(each_course, temp_course):
+    """Read lab info if a lab exists in the course.
+
+    Args:
+        each_course: the course to be checked if lab exist
+        temp_course: the course object to be added to the database
+    Raises:
+        KeyError: If the 'course_raw' attribute provided is not in the json key list
+    Returns:
+        the course object with its lab session
+
+    """
+    if(each_course['Lab Time']):
+        temp_lab = temp_course.lab.add()
+        temp_lab.UID = temp_course.UID + 'L';
+        labInfo = each_course['Lab Time'][0]
+        temp_lab.days = labInfo['Days']
+        temp_lab.time = labInfo['Time']
+        temp_lab.startDate = labInfo['Date'][:5]
+        temp_lab.endDate = labInfo['Date'][6:]
+        temp_lab.instructor = labInfo['Instructor']
+        temp_lab.location = labInfo['Location']
+    return temp_course
 
 
 def from_raw_to_list(course_raw, quarter_name):
