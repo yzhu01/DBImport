@@ -54,7 +54,7 @@ def read_course_proto(json_object, course_list, departmentName):
         temp_course.startDate = each_course['Date'][:5]
         temp_course.endDate = each_course['Date'][6:]
         temp_course.location = each_course['Location']
-        temp_course.days = ('ONLINE' in temp_course.location) ? 'ONLINE':each_course['Days']
+        temp_course.days = 'ONLINE' if ('ONLINE' in temp_course.location) else each_course['Days']
         temp_course.attribute = each_course['Attribute']
         if(each_course['Lab Time']):
             temp_lab = temp_course.lab.add()
