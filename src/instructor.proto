@@ -12,3 +12,4 @@ message Instructor{
 	repeated string department = 6;
 	repeated Course relatedCourse = 7;
 }
+

@@ -34,3 +34,4 @@ message Course {
 	optional string location = 7;
 	}
 }
+

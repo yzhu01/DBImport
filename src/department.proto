@@ -7,3 +7,4 @@ message Department{
 	required string deptName = 1;
 	repeated Course courses = 2;
 }
+
