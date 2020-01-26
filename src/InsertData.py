@@ -14,6 +14,7 @@ from google.protobuf.json_format import MessageToDict
 from ReadCourseData import from_raw_to_list
 from configparser import ConfigParser
 from pymongo import MongoClient
+from pymongo import errors as mongoerrors
 from pathlib import Path
 
 logging.basicConfig(filename = '../log/' + 
@@ -56,8 +57,7 @@ def check_file_open(filename):
     if filename:
         with open(filename, 'r') as f:
             return json.load(f)
-    logger.error('File name: ', filename, ' cannot be found!')
-    raise FileNotFoundError('File not found', filename)
+    raise FileNotFoundError('File', filename, 'is not found!')
 
 
 def insert_data(course_list, dept_list, quarter_name):
@@ -109,18 +109,14 @@ def main():
                 course_list, department_list = from_raw_to_list(course_raw_data, quarter_name)
                 insert_data(course_list, department_list, quarter_name)
             year += 1
-    except pymongo.errors.ConnectionFailure:
+    except mongoerrors.ConnectionFailure:
         logger.error('MongoDB connection failure!')
-        return
-    except pymongo.errors:
+    except mongoerrors.PyMongoError:
         logger.error('Error with MongoDB!')
-        return
-    except FileNotFoundError fnfe:
-        logger.error(fnfe)
-        return
-    except KeyError ke:
-        logger.error(ke, 'is not found in json file!')
-        return
+    except FileNotFoundError as fnfe:
+        logger.error(str(fnfe))
+    except KeyError as ke:
+        logger.error(str(ke) + ' is not found in json file!')
     finally:
         logger.info('Excecution Finished.')
 
