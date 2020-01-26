@@ -57,7 +57,7 @@ def check_file_open(filename):
         with open(filename, 'r') as f:
             return json.load(f)
     logger.error('File name: ', filename, ' cannot be found!')
-    raise FileNotFoundError('File not found')
+    raise FileNotFoundError('File not found', filename)
 
 
 def insert_data(course_list, dept_list, quarter_name):
@@ -109,9 +109,20 @@ def main():
                 course_list, department_list = from_raw_to_list(course_raw_data, quarter_name)
                 insert_data(course_list, department_list, quarter_name)
             year += 1
-    except Exception as e:
-        logger.error(e)
-    logger.info('Excecution Finished.')
+    except pymongo.errors.ConnectionFailure:
+        logger.error('MongoDB connection failure!')
+        return
+    except pymongo.errors:
+        logger.error('Error with MongoDB!')
+        return
+    except FileNotFoundError fnfe:
+        logger.error(fnfe)
+        return
+    except KeyError ke:
+        logger.error(ke, 'is not found in json file!')
+        return
+    finally:
+        logger.info('Excecution Finished.')
 
 if __name__ == "__main__":
     main()
