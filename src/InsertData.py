@@ -14,6 +14,7 @@ from google.protobuf.json_format import MessageToDict
 from ReadCourseData import from_raw_to_list
 from configparser import ConfigParser
 from pymongo import MongoClient
+from pymongo import errors as mongoerrors
 from pathlib import Path
 
 logging.basicConfig(filename = '../log/' + 
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
 env_config = ConfigParser()
 env_config.read(Path('..') / 'config' / 'setting.config')
 mongo_config = env_config['MongoDB']
+QUARTER_INDEX = -16
 
 def get_db():
     """Get MongoDB username and password from config file and returns desired databse.
@@ -55,9 +57,7 @@ def check_file_open(filename):
     if filename:
         with open(filename, 'r') as f:
             return json.load(f)
-    else:
-        logger.info('File name: ', filename, ' cannot be found!')
-        raise FileNotFoundError('File not found')
+    raise FileNotFoundError('File', filename, 'is not found!')
 
 
 def insert_data(course_list, dept_list, quarter_name):
@@ -101,16 +101,23 @@ def main():
     year = int(config['data_info']['start_year'])
 
     try:
-        while(config['locations'][str(year)]):
+        while config['locations'][str(year)]:
             all_quarters_in_year = config['locations'][str(year)].split(',')
             for each_quarter in all_quarters_in_year:
-                quarter_name, filename = each_quarter[:-16].replace('_', ' '), path + each_quarter
+                quarter_name, filename = each_quarter[:QUARTER_INDEX].replace('_', ' '), path + each_quarter
                 course_raw_data = check_file_open(filename)
                 course_list, department_list = from_raw_to_list(course_raw_data, quarter_name)
                 insert_data(course_list, department_list, quarter_name)
             year += 1
-    except Exception as e:
-        logger.error(e)
+    except mongoerrors.ConnectionFailure:
+        logger.error('MongoDB connection failure!')
+    except mongoerrors.PyMongoError:
+        logger.error('Error with MongoDB!')
+    except FileNotFoundError as fnfe:
+        logger.error(str(fnfe))
+    except KeyError as ke:
+        logger.error(str(ke) + ' is not found in json file!')
+    finally:
         logger.info('Excecution Finished.')
 
 if __name__ == "__main__":
