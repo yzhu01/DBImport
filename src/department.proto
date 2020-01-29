@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+package dbimport;
+import "course.proto";
+
+message Department{
+	required string deptName = 1;
+	repeated Course courses = 2;
+}
+

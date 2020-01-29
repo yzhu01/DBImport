@@ -111,3 +111,25 @@ Reference:
 
 1. https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
 2. https://github.com/joelparkerhenderson/git_commit_message#begin-with-a-short-summary-line
+
+## setting.config format  
+ 
+    [MongoDB]    
+    Mongo_User = <db username>  
+    Mongo_Password = <db password>  
+    Mongo_DBName = <db name>  
+    Mongo_Postfix = <db connection string> for example @something.mongodb.net/test?retryWrites=true&w=majority  
+       
+    [Config]  
+    Config_File_Name = file_paths.config
+
+## file_paths.config example
+  
+    [data_info]  
+    start_year = 2010  
+    
+    [locations]  
+    path = E:\Personal_Workflow\FHDA\DBImport\course_data\  
+    2010 = 2010_Fall_De_Anza_courseData.json,2010_Fall_Foothill_courseData.json,2010_Summer_De_Anza_courseData.json,2010_Summer_Foothill_courseData.json  
+    2011 = 2011_Fall_De_Anza_courseData.json,2011_Fall_Foothill_courseData.json,2011_Spring_De_Anza_courseData.json,2011_Spring_Foothill_courseData.json,2011_Summer_De_Anza_courseData.json,2011_Summer_Foothill_courseData.json,2011_Winter_De_Anza_courseData.json,2011_Winter_Foothill_courseData.json  
+    ....
