@@ -37,8 +37,8 @@ npm install
 pip install -r requirements.txt
 ```
   
-We require all contributors to write docstring for other contributors easy to follow.  
-One of the software development processes is TDD(Test-driven Development). We highly recommended you *write at least one test before code*  
+We require all contributors to write docstring for other contributors so the codes are easy to follow. 
+One of the software development processes is Test-driven Development(TDD). We highly recommended you *write at least one test before code*  
 However, the test is not required but recommended.  
 The philosophy is **you must know exactly the detailed behavior of your code does**.  
 
