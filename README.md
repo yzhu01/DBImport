@@ -37,10 +37,10 @@ npm install
 pip install -r requirements.txt
 ```
   
-We require all contributor write docsting for other contributors easy to follow.  
-One of software development process is TDD. We highly recommended you *write test before code*  
-However, test is not require but recommended.  
-The philosophy is **you must know exactly the detailed behavior of your code doing**.  
+We require all contributors to write docstring for other contributors so the codes are easy to follow. 
+One of the software development processes is Test-driven Development(TDD). We highly recommended you *write at least one test before code*  
+However, the test is not required but recommended.  
+The philosophy is **you must know exactly the detailed behavior of your code does**.  
 
 We use [pytest](https://docs.pytest.org/) to test our code.  
 We use [pydocstring](http://pydocstyle.org/) to test our docstring.  
@@ -49,10 +49,10 @@ We use [pylint](https://pylint.org) as Python linter.
 
 ## Coding Style
 
-In general, we follow PEP8 Python coding style and Google pyguide
-However, if PEP8 and Google pyguide has conflict style, PEP8 take place.
+In general, we follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) Python coding style and Google pyguide.
+However, when [PEP 8](https://www.python.org/dev/peps/pep-0008/) is in conflict with [Google Python Style Guide](http://google.github.io/styleguide/pyguide.html), [PEP 8](https://www.python.org/dev/peps/pep-0008/) should be given precedence.
 
-Some special rule:
+Some special rules:
 
 1. max-line-length: 100
 
